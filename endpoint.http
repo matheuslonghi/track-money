@@ -1,0 +1,55 @@
+@baseUrl = http://localhost:8000
+
+### Health Check Endpoint
+GET {{baseUrl}}/health
+
+### User Registration Endpoint
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+    "name": "matheus",
+    "email": "matheus@teste.com.br",
+    "password": "super123456"
+}
+
+### User Token Generation Endpoint
+# @name login
+POST {{baseUrl}}/users/token
+Content-Type: application/x-www-form-urlencoded
+
+username=matheus@teste.com.br&password=super123456
+
+###
+@token = {{login.response.body.access_token}}
+
+### Get User Profile Endpoint (requires JWT token)
+GET {{baseUrl}}/users/profile
+Authorization: Bearer {{token}}
+
+### Select Plan Endpoint (requires JWT token)
+POST {{baseUrl}}/subscriptions/select-plan
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "plan_id": 3,
+    "credit_card": "23456789"
+}
+
+### GET user plans (requires JWT token)
+GET {{baseUrl}}/subscriptions/user
+Authorization: Bearer {{token}}
+
+### Create a bank account (requires JWT token)
+POST {{baseUrl}}/movements/bank-accounts
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Conta teste 4",
+    "bank_name": "Itau",
+    "account_number": "123456",
+    "account_type": "Corrente",
+    "initial_balance": 1000.0
+}
